@@ -508,6 +508,54 @@ void PvP() {
 	}
 }
 /////////////////////////////////////////////////////////////////////////////////////////////
+void game_menu() {
+	clrscr();
+	absorb_input();
+	hide_pointer();
+	int x=38, y=15;
+	int minn = 15, maxx = 15;
+	while (1) {
+		clrscr();
+		absorb_input();
+		TextColor(14);
+		gotoXY(40, 5);
+		printf("Please select game mode");
+		//////////////////////////////////////////
+		TextColor(12);
+		gotoXY(40, 15);
+		printf("Player vs Player");
+
+		//gotoXY(40, 16);
+		//printf("choose2");
+
+		//gotoXY(40, 17);
+		//printf("choose3");
+		/////////////////////////////////////////////////////////////////
+		gotoXY(x, y);
+		printf("%c", char(175));
+		while (1) {
+			int tmp=inputKey();
+			if (tmp!=-1) {
+				if (tmp == 72) {
+					if (y>minn)y--;
+					break;
+				}
+				if (tmp == 80) {
+					if (y<maxx)y++;
+					break;
+				}
+				if (tmp == 13) {
+					if (y == 15) {
+						PvP();
+						return;
+					}
+				}
+			}
+			else Sleep(1);
+		}
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
 int main() {
 	ios::sync_with_stdio(0);
 	cin.tie(0);
@@ -515,5 +563,5 @@ int main() {
 	srand(time(NULL));
 	splash_screen();
 	game_introduction();
-	PvP();
+	game_menu();
 }

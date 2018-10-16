@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{B5041974-42BA-43FA-8234-DA3E478A928E}</ProjectGuid>
+    <ProjectGuid>{322152F7-9EC2-4354-B760-F00844ACFE1D}</ProjectGuid>
     <RootNamespace>GOMOKU</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>

@@ -25,7 +25,7 @@ struct point {
 
 point pos[100][100];
 
-int dd[100][100],winner;
+int dd[100][100], winner;
 
 char chr[100][100];
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ int inputKey()
 }
 
 void absorb_input() {
-	while (inputKey()) {}
+	while (inputKey() != -1) {}
 }
 
 void clrscr()
@@ -100,29 +100,29 @@ bool avalible(int x, int y) {
 	return x >= 1 && x <= 13 && y >= 1 && y <= 13;
 }
 
-void check(int x, int y,int directX,int directY, char k, int dem) {
+void check(int x, int y, int directX, int directY, char k, int dem) {
 	if (dem == 5) {
 		if (k == 'X') winner = 1;
 		else winner = 2;
 		return;
 	}
-	if (avalible(x, y)==0||chr[x][y]!=k) return;
+	if (avalible(x, y) == 0 || chr[x][y] != k) return;
 	check(x + directX, y + directY, directX, directY, k, dem + 1);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 void splash_screen() {
-	int now = 0,color;
+	int now = 0, color;
 	hide_pointer();
 	while (++now) {
 		//clrscr();
 	///////////////////////////////////////////////////////////////////////////        G
-		TextColor(8+(now+8-1)%8);
+		TextColor(8 + (now + 8 - 1) % 8);
 		if (now >= 1) {
 			for (int Y = 5; Y <= 12; ++Y) {
 				gotoXY(20, Y);
 				printf("%c", char(219));
 			}
-		}				
+		}
 
 		if (now >= 2) {
 			for (int X = 21; X <= 28; ++X) {
@@ -145,7 +145,7 @@ void splash_screen() {
 				printf("%c", char(220));
 			}
 		}
-	/////////////////////////////////////////////////////////////////////////////   O
+		/////////////////////////////////////////////////////////////////////////////   O
 		TextColor(8 + (now + 8 - 2) % 8);
 		if (now >= 4) {
 			for (int Y = 5; Y <= 12; ++Y) {
@@ -165,7 +165,7 @@ void splash_screen() {
 				printf("%c", char(219));
 			}
 		}
-	///////////////////////////////////////////////////////////////////////////////   M
+		///////////////////////////////////////////////////////////////////////////////   M
 		TextColor(8 + (now + 8 - 3) % 8);
 		if (now >= 5) {
 			gotoXY(44, 4);
@@ -193,7 +193,7 @@ void splash_screen() {
 				tmpX++; tmpY--;
 			}
 		}
-	////////////////////////////////////////////////////////////////////////////      O
+		////////////////////////////////////////////////////////////////////////////      O
 		if (now >= 6) {
 			TextColor(8 + (now + 8 - 4) % 8);
 			for (int Y = 5; Y <= 12; ++Y) {
@@ -213,7 +213,7 @@ void splash_screen() {
 				printf("%c", char(219));
 			}
 		}
-	/////////////////////////////////////////////////////////////////////////        K
+		/////////////////////////////////////////////////////////////////////////        K
 		if (now >= 7) {
 			TextColor(8 + (now + 8 - 5) % 8);
 			gotoXY(66, 4);
@@ -237,7 +237,7 @@ void splash_screen() {
 				tmpX++, tmpY++;
 			}
 		}
-	/////////////////////////////////////////////////////////////////////             U
+		/////////////////////////////////////////////////////////////////////             U
 		if (now >= 8) {
 			TextColor(8 + (now + 8 - 6) % 8);
 			gotoXY(75, 4);
@@ -257,7 +257,7 @@ void splash_screen() {
 				printf("%c", char(219));
 			}
 		}
-	/////////////////////////////////////////////////////////////////////       myself
+		/////////////////////////////////////////////////////////////////////       myself
 		if (now >= 9) {
 			TextColor(14);
 			gotoXY(95, 8);
@@ -266,7 +266,7 @@ void splash_screen() {
 			printf("HCMUS-VNU");
 
 		}
-	////////////////////////////////////////////////////////////////////// press
+		////////////////////////////////////////////////////////////////////// press
 
 		if (now >= 10) {
 			color = 8 + rand() % 8;
@@ -276,7 +276,7 @@ void splash_screen() {
 		}
 
 		if (now <= 9) {
-			while(inputKey()!=-1){}
+			while (inputKey() != -1) {}
 			Sleep(400);
 		}
 		else {
@@ -404,48 +404,48 @@ void PvP() {
 		printf("%c", char(217));
 		///////////////////////////////////////////////////////////////////////////
 		for (int i = 1; i <= 13; ++i)
-			for (int j = 1; j <= 13; ++j) 
-			if(dd[i][j]){
-				int X = pos[i][j].x;
-				int Y = pos[i][j].y;
-				gotoXY(X, Y);
-				if (chr[i][j] == 'X') {
-					TextColor(12);
-					printf("X");
+			for (int j = 1; j <= 13; ++j)
+				if (dd[i][j]) {
+					int X = pos[i][j].x;
+					int Y = pos[i][j].y;
+					gotoXY(X, Y);
+					if (chr[i][j] == 'X') {
+						TextColor(12);
+						printf("X");
+					}
+					else {
+						TextColor(9);
+						printf("O");
+					}
 				}
-				else {
-					TextColor(9);
-					printf("O");
-				}
-			}
 		/////////////////////////////////////////////////////////////////////////// check for winner
-		for (int X=1;X<=13;++X)
-			for (int Y=1;Y<=13;++Y)
+		for (int X = 1; X <= 13; ++X)
+			for (int Y = 1; Y <= 13; ++Y)
 				if (chr[X][Y]) {
 					////////// up
 					check(X, Y - 1, 0, -1, chr[X][Y], 1);
 					////////// down
-					check(X, Y + 1, 0 , 1, chr[X][Y], 1);
+					check(X, Y + 1, 0, 1, chr[X][Y], 1);
 					////////// left
-					check(X - 1, Y,-1 , 0, chr[X][Y], 1);
+					check(X - 1, Y, -1, 0, chr[X][Y], 1);
 					//////////right
-					check(X + 1, Y, 1 , 0, chr[X][Y], 1);
+					check(X + 1, Y, 1, 0, chr[X][Y], 1);
 					//////////up-left
 					check(X - 1, Y - 1, -1, -1, chr[X][Y], 1);
 					//////////up-right
-					check(X + 1, Y - 1, 1, -1 , chr[X][Y], 1);
+					check(X + 1, Y - 1, 1, -1, chr[X][Y], 1);
 					/////////down-left
-					check(X - 1, Y + 1, -1 ,1 , chr[X][Y], 1);
+					check(X - 1, Y + 1, -1, 1, chr[X][Y], 1);
 					/////////down-right
-					check(X + 1, Y + 1, 1 , 1 , chr[X][Y], 1);
-			}
+					check(X + 1, Y + 1, 1, 1, chr[X][Y], 1);
+				}
 		if (winner) {
 			while (1) {
 				clrscr();
 				gotoXY(45, 5);
 				TextColor(9);
 				printf("     winner is player \n\n");
-				TextColor(8+rand()%8);
+				TextColor(8 + rand() % 8);
 				if (winner == 1) {
 					printf("                                                        111          \n");
 					printf("                                                      11111          \n");
@@ -471,7 +471,7 @@ void PvP() {
 				gotoXY(50, 25);
 				printf("press any key to exit");
 				Sleep(500);
-				if (inputKey()!=-1) 
+				if (inputKey() != -1)
 					return;
 			}
 		}

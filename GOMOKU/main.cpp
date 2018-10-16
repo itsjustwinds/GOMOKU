@@ -447,14 +447,14 @@ void PvP() {
 				printf("     winner is player \n\n");
 				TextColor(8+rand()%8);
 				if (winner == 1) {
-					printf("                                                       111      \n");
-					printf("                                                       11111    \n");
-					printf("                                                       111111   \n");
-					printf("                                                       111      \n");
-					printf("                                                       111      \n");
-					printf("                                                       111      \n");
-					printf("                                                       111      \n");
-					printf("                                                     11111111   \n");
+					printf("                                                        111          \n");
+					printf("                                                      11111          \n");
+					printf("                                                     111111          \n");
+					printf("                                                        111          \n");
+					printf("                                                        111          \n");
+					printf("                                                        111          \n");
+					printf("                                                        111          \n");
+					printf("                                                     11111111        \n");
 				}
 				else {
 					printf("                                                      222222         \n");

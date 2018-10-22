@@ -15,6 +15,8 @@
 #include<windows.h>
 #include<conio.h>
 #include<dos.h>
+#include<fstream>
+#pragma warning (disable : 4996)
 #define consoleM 120
 #define consoleN 30
 using namespace std;
@@ -23,9 +25,9 @@ struct point {
 	int x, y;
 };
 
-point pos[100][100],trc[100][100];
+point pos[100][100],trc[100][100],last_move;
 
-int dd[100][100], winner,color[100][100];
+int dd[100][100], winner,color[100][100],New_game,turn;
 
 char chr[100][100];
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +105,7 @@ bool avalible(int x, int y) {
 void check(int x, int y, int directX, int directY, char k, int dem) {
 	if (dem == 5) {
 		if (k == 'X') winner = 1;
-		else winner = 2;
+		if (k == 'O') winner = 2;
 		return;
 	}
 	if (avalible(x, y) == 0 || chr[x][y] != k) return;
@@ -322,6 +324,114 @@ void game_introduction() {
 	}
 }
 
+void load_game_PvP() {
+	if (New_game) {
+		turn = 1;
+		for (int i = 0; i < 100; ++i)
+			for (int j = 0; j < 100; ++j)
+				chr[i][j] = '.';
+		return;
+	}
+	ifstream Fin("data_PvP.txt");
+	int ok=0;
+	while (Fin >>turn) {
+		ok = 1;
+		break;
+	}
+	if (!ok) {
+			New_game = 1;
+			load_game_PvP();
+			Fin.close();
+			return;
+		}
+	//////////////////////////////////////////////////////////////
+	Fin >> last_move.x >> last_move.y;
+	///////////////////////////////////////////////////// trc[][]
+	for (int i = 0; i < 100; ++i)
+		for (int j = 0; j < 100; ++j)
+			Fin >> trc[i][j].x >> trc[i][j].y;
+	///////////////////////////////////////////////////// dd[][]
+	for (int i = 0; i < 100; ++i)
+		for (int j = 0; j < 100; ++j)
+			Fin >> dd[i][j];
+	///////////////////////////////////////////////////// color[][]
+	for (int i = 0; i < 100; ++i)
+		for (int j = 0; j < 100; ++j)
+			Fin >> color[i][j];
+	//////////////////////////////////////////////////// chr[][]
+	for (int i = 0; i < 100; ++i)
+		for (int j = 0; j < 100; ++j)
+			Fin >> chr[i][j];
+	Fin.close();
+}
+void save_PvP() {
+	ofstream Fout("data_PvP.txt");
+	Fout << turn << " " << last_move.x << " " << last_move.y << "\n";
+	for (int i = 0; i < 100; ++i) {
+		for (int j = 0; j < 100; ++j)
+		Fout << trc[i][j].x << " " << trc[i][j].y << " ";
+		Fout << "\n";
+	}
+	for (int i = 0; i < 100; ++i) {
+		for (int j = 0; j < 100; ++j)
+			Fout << dd[i][j] << " ";
+		Fout << "\n";
+	}
+	for (int i = 0; i < 100; ++i) {
+		for (int j = 0; j < 100; ++j)
+			Fout << color[i][j] << " ";
+		Fout << "\n";
+	}
+	for (int i = 0; i < 100; ++i) {
+		for (int j = 0; j < 100; ++j)
+			Fout << chr[i][j];
+		Fout << "\n";
+	}
+	Fout.close();
+}
+void PvP_data() {
+	hide_pointer();
+	int x = 38, y = 15;
+	int minn = 15, maxx = 16;
+	while (1) {
+		clrscr();
+		absorb_input();
+		gotoXY(40, 5);
+		TextColor(14);
+		printf("LOAD GAME !");
+		TextColor(12);
+		gotoXY(40, 15);
+		printf("New Game");
+		gotoXY(40, 16);
+		printf("saved game");
+		gotoXY(x, y);
+		printf("%c", char(175));
+		while (1) {
+			int tmp = inputKey();
+			if (tmp != -1) {
+				if (tmp == 72) {
+					if (y > minn)y--;
+					break;
+				}
+				if (tmp == 80) {
+					if (y < maxx)y++;
+					break;
+				}
+				if (tmp == 13) {
+					if (y == 15) {
+						New_game = 1;
+						return;
+					}
+					if (y == 16) {
+						New_game = 0;
+						return;
+					}
+				}
+			}
+			else Sleep(1);
+		}
+	}
+}
 void PvP() {
 	//left-top: (5,3)
 	//left-bottom: (5,25)
@@ -330,8 +440,7 @@ void PvP() {
 	hide_pointer();
 	absorb_input();
 	clrscr();
-	int turn = 1;
-	point last_move = { 0,0 };
+	load_game_PvP();
 	while (1) {
 		clrscr();
 		gotoXY(80, 2);
@@ -425,7 +534,7 @@ void PvP() {
 		/////////////////////////////////////////////////////////////////////////// check for winner
 		for (int X = 1; X <= 13; ++X)
 			for (int Y = 1; Y <= 13; ++Y)
-				if (chr[X][Y]) {
+				if (dd[X][Y]==1) {
 					////////// up
 					check(X, Y - 1, 0, -1, chr[X][Y], 1);
 					////////// down
@@ -495,6 +604,10 @@ void PvP() {
 			printf("%d",turn);
 			int tmp = inputKey();
 			if (tmp != -1) {
+				if (tmp == 'S') {
+					save_PvP();
+					continue;
+				}
 				if (tmp == 'U') {
 					if (last_move.x == 0 &&last_move.y == 0) continue;
 					turn = 3 - turn;
@@ -615,6 +728,7 @@ void game_menu() {
 				}
 				if (tmp == 13) {
 					if (y == 15) {
+						PvP_data();
 						PvP();
 						return;
 					}

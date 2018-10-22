@@ -23,9 +23,9 @@ struct point {
 	int x, y;
 };
 
-point pos[100][100];
+point pos[100][100],trc[100][100];
 
-int dd[100][100], winner;
+int dd[100][100], winner,color[100][100];
 
 char chr[100][100];
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -331,8 +331,12 @@ void PvP() {
 	absorb_input();
 	clrscr();
 	int turn = 1;
+	point last_move = { 0,0 };
 	while (1) {
 		clrscr();
+		gotoXY(80, 2);
+		TextColor(15);
+		printf("UNDO: Shift+U");
 		////////////////////////////////////////////////////////////// line
 		TextColor(14);
 		int cnt = 0;
@@ -410,11 +414,11 @@ void PvP() {
 					int Y = pos[i][j].y;
 					gotoXY(X, Y);
 					if (chr[i][j] == 'X') {
-						TextColor(12);
+						TextColor(color[i][j]);
 						printf("X");
 					}
 					else {
-						TextColor(9);
+						TextColor(color[i][j]);
 						printf("O");
 					}
 				}
@@ -476,32 +480,97 @@ void PvP() {
 			}
 		}
 		///////////////////////////////////////////////////////////////////////////
-		gotoXY(70, 5);
+		gotoXY(65, 5);
 		TextColor(12);
-		printf("press ENTER to type your move player %d!", turn);
+		printf("press directional key to do your move : player %d!", turn);
+		gotoXY(65, 8);
+		printf("press ENTER to mark it as your symbol.");
 		TextColor(15);
+		point now = { 1,1 };
 		while (1) {
-			if (inputKey() != -1) {
-				int x, y;
-				gotoXY(70, 14);
-				printf("Please type X coordinate");
-				gotoXY(70, 15);
-				cin >> x;
-				gotoXY(70, 19);
-				printf("Please type Y coordinate");
-				gotoXY(70, 20);
-				cin >> y;
-				if (dd[x][y])
-				{
-					absorb_input();
+			int X = pos[now.x][now.y].x;
+			int Y = pos[now.y][now.y].y;
+			gotoXY(X, Y);
+			TextColor(7);
+			printf("%d",turn);
+			int tmp = inputKey();
+			if (tmp != -1) {
+				if (tmp == 'U') {
+					if (last_move.x == 0 &&last_move.y == 0) continue;
+					turn = 3 - turn;
+					chr[last_move.x][last_move.y] = 0;
+					dd[last_move.x][last_move.y] = 0;
+					last_move = trc[last_move.x][last_move.y];
 					break;
 				}
-				dd[x][y] = 1;
-				if (turn == 1) chr[x][y] = 'X';
-				else chr[x][y] = 'Y';
-				turn = 3 - turn;
-				absorb_input();
-				break;
+				if (tmp == 72) {
+					if (!avalible(now.x, now.y - 1)) continue;
+					gotoXY(X, Y);
+					TextColor(color[now.x][now.y]);
+					printf("%c", chr[now.x][now.y]);
+					X = pos[now.x][now.y - 1].x;
+					Y = pos[now.x][now.y - 1].y;
+					gotoXY(X, Y);
+					TextColor(7);
+					printf("%d",turn);
+					now.y--;	
+					continue;
+				}
+				if (tmp == 80) {
+					if (!avalible(now.x, now.y + 1)) continue;
+					gotoXY(X, Y);
+					TextColor(color[now.x][now.y]);
+					printf("%c", chr[now.x][now.y]);
+					X = pos[now.x][now.y + 1].x;
+					Y = pos[now.x][now.y + 1].y;
+					gotoXY(X, Y);
+					TextColor(7);
+					printf("%d",turn);
+					now.y++;
+					continue;
+				}
+				if (tmp == 75) {
+					if (!avalible(now.x - 1, now.y)) continue;
+					gotoXY(X, Y);
+					TextColor(color[now.x][now.y]);
+					printf("%c", chr[now.x][now.y]);
+					X = pos[now.x - 1][now.y].x;
+					Y = pos[now.x - 1][now.y].y;
+					gotoXY(X, Y);
+					TextColor(7);
+					printf("%d",turn);
+					now.x--;
+					continue;
+				}
+				if (tmp == 77) {
+					if (!avalible(now.x + 1, now.y)) continue;
+					gotoXY(X, Y);
+					TextColor(color[now.x][now.y]);
+					printf("%c", chr[now.x][now.y]);
+					X = pos[now.x + 1][now.y].x;
+					Y = pos[now.x + 1][now.y].y;
+					gotoXY(X, Y);
+					TextColor(7);
+					printf("%d",turn);
+					now.x++;
+					continue;
+				}
+				if (tmp == 13) {
+					if (dd[now.x][now.y])
+					{
+						absorb_input();
+						break;
+					}
+					dd[now.x][now.y] = 1;
+					color[now.x][now.y] = 8 + rand() % 8;
+					if (turn == 1) chr[now.x][now.y] = 'X';
+					else chr[now.x][now.y] = 'O';
+					turn = 3 - turn;
+					absorb_input();
+					trc[now.x][now.y] = last_move;
+					last_move = { now.x,now.y };
+					break;
+				}
 			}
 			else Sleep(1);
 		}
@@ -519,7 +588,7 @@ void game_menu() {
 		absorb_input();
 		TextColor(14);
 		gotoXY(40, 5);
-		printf("Please select game mode");
+		printf("Please select game mode and press ENTER");
 		//////////////////////////////////////////
 		TextColor(12);
 		gotoXY(40, 15);
@@ -561,6 +630,9 @@ int main() {
 	cin.tie(0);
 	cout.tie(0);
 	srand(time(NULL));
+	HANDLE hin = GetStdHandle(STD_INPUT_HANDLE);
+	SetConsoleMode(hin, ENABLE_EXTENDED_FLAGS);
+	SetConsoleMode(hin, ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT);
 	splash_screen();
 	game_introduction();
 	game_menu();

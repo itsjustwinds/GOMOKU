@@ -335,6 +335,8 @@ void game_introduction() {
 		gotoXY(20, 5);
 		printf("- To win this game, your symbols must be 5 in a row or a diagonal.");
 		gotoXY(20, 6);
+		printf("- You have chance get your opponent symbols.");
+		gotoXY(20, 7);
 		printf("- There is no timer, think carefully before do your choice.\n\n\n\n\n");
 		////////////////////////////////////////////////////////////////////////////////////////////
 		TextColor(11);
@@ -476,15 +478,15 @@ void PvP() {
 	load_game_PvP();
 	while (1) {
 		clrscr();
-		gotoXY(80, 2);
 		TextColor(15);
-		printf("UNDO: F1");
 		gotoXY(80, 3);
 		printf("SAVE GAME: F3");
 		gotoXY(80, 4);
-		printf("RETURN MENU: F9");
+		printf("STEAL: F5");
 		gotoXY(80, 5);
 		printf("EXIT: F8");
+		gotoXY(80, 6);
+		printf("RETURN MENU: F9");
 		////////////////////////////////////////////////////////////// line
 		TextColor(14);
 		int cnt = 0;
@@ -628,13 +630,14 @@ void PvP() {
 			}
 		}
 		///////////////////////////////////////////////////////////////////////////
-		gotoXY(65, 6);
+		gotoXY(65, 10);
 		TextColor(12);
 		printf("press directional key to do your move : player %d!", turn);
-		gotoXY(65, 9);
+		gotoXY(65, 12);
 		printf("press ENTER to mark it as your symbol.");
 		TextColor(15);
 		point now = { 1,1 };
+		int steal = 0;
 		while (1) {
 			int X = pos[now.x][now.y].x;
 			int Y = pos[now.y][now.y].y;
@@ -650,17 +653,13 @@ void PvP() {
 					back = 1;
 					return;
 				}
+				if (tmp == F5) {
+					steal = 1 - steal;
+					continue;
+				}
 				if (tmp == F3) {
 					save_PvP();
 					continue;
-				}
-				if (tmp == F1) {
-					if (last_move.x == 0 &&last_move.y == 0) continue;
-					turn = 3 - turn;
-					chr[last_move.x][last_move.y] = 0;
-					dd[last_move.x][last_move.y] = 0;
-					last_move = trc[last_move.x][last_move.y];
-					break;
 				}
 				if (tmp == 72) {
 					if (!avalible(now.x, now.y - 1)) continue;
@@ -715,19 +714,38 @@ void PvP() {
 					continue;
 				}
 				if (tmp == 13) {
-					if (dd[now.x][now.y])
-					{
+					if (steal == 0) {
+						if (dd[now.x][now.y])
+						{
+							absorb_input();
+							continue;
+						}
+						dd[now.x][now.y] = 1;
+						color[now.x][now.y] = 8 + rand() % 8;
+						if (turn == 1) chr[now.x][now.y] = 'X';
+						else chr[now.x][now.y] = 'O';
+						turn = 3 - turn;
 						absorb_input();
-						break;
+						trc[now.x][now.y] = last_move;
+						last_move = { now.x,now.y };
 					}
-					dd[now.x][now.y] = 1;
-					color[now.x][now.y] = 8 + rand() % 8;
-					if (turn == 1) chr[now.x][now.y] = 'X';
-					else chr[now.x][now.y] = 'O';
-					turn = 3 - turn;
-					absorb_input();
-					trc[now.x][now.y] = last_move;
-					last_move = { now.x,now.y };
+					if (steal == 1) {
+						if (!dd[now.x][now.y]) {
+							absorb_input();
+							continue;
+						}
+						if (turn == 1 && chr[now.x][now.y] == 'X') continue;
+						if (turn == 2 && chr[now.x][now.y] == 'O') continue;
+						int RAND = rand() % 10;
+						if (RAND == 0 || RAND == 3 || RAND == 6 || RAND == 9) {
+							if (turn == 1 && chr[now.x][now.y] == 'O')
+								chr[now.x][now.y] = 'X';
+							if (turn == 2 && chr[now.x][now.y] == 'X')
+								chr[now.x][now.y] = 'O';
+						}
+						turn = 3 - turn;
+						absorb_input();
+					}
 					break;
 				}
 			}
@@ -857,6 +875,9 @@ void PvC_easy(){
 	load_game_PvC_easy();
 	while (1) {
 		clrscr();
+		gotoXY(80, 1);
+		TextColor(15);
+		printf("PvC: easy mode");
 		gotoXY(80, 2);
 		TextColor(15);
 		printf("your symbol is : ");
@@ -865,9 +886,11 @@ void PvC_easy(){
 		gotoXY(80, 3);
 		printf("SAVE GAME: F3");
 		gotoXY(80, 4);
-		printf("RETURN MENU: F9");
+		printf("STEAL: F5");
 		gotoXY(80, 5);
 		printf("EXIT: F8");
+		gotoXY(80, 6);
+		printf("RETURN MENU: F9");
 		////////////////////////////////////////////////////////////// line
 		TextColor(14);
 		int cnt = 0;
@@ -975,7 +998,9 @@ void PvC_easy(){
 					check(X + 1, Y + 1, 1, 1, chr[X][Y], 1);
 				}
 		if (winner) {
+			int times = 0;
 			while (1) {
+				++times;
 				clrscr();
 				TextColor(8 + rand() % 8);
 				if (winner == 1) {
@@ -991,6 +1016,8 @@ void PvC_easy(){
 				}
 				TextColor(15);
 				gotoXY(50, 25);
+				if (times==1)Sleep(1000);
+				absorb_input();
 				printf("press any key to exit");
 				Sleep(500);
 				if (inputKey() != -1)
@@ -1005,6 +1032,7 @@ void PvC_easy(){
 		printf("press ENTER to mark it as your symbol.");
 		TextColor(15);
 		point now = { 1,1 };
+		int steal = 0;
 		while (1) {
 			if (turn == 2) {
 				int dmcs = 0;
@@ -1016,10 +1044,30 @@ void PvC_easy(){
 							Dpoint.push_back({ x,y });
 						}
 				}
-				int pos = rand() % Dpoint.size();
-				int RAND = rand() % 10;
-				now = { Dpoint[pos].x,Dpoint[pos].y };
-				if (RAND != 3 && RAND != 6 && RAND != 0) chr[now.x][now.y] = 'O';
+				if (Dpoint.size()) {
+					int pos = rand() % Dpoint.size();
+					int RAND = rand() % 10;
+					now = { Dpoint[pos].x,Dpoint[pos].y };
+					if (RAND != 3 && RAND != 6 && RAND != 0) chr[now.x][now.y] = 'O';
+				}
+				else {
+					int OK = 0;
+					for (int x = 1; x <= 13; ++x) {
+						for (int y = 1; y <= 13; ++y) {
+							if (dd[x][y]) continue;
+							dd[x][y] = 1;
+							color[x][y] = 8 + rand() % 8;
+							if (turn == 1) chr[x][y] = 'X';
+							else chr[x][y] = 'O';
+							absorb_input();
+							trc[x][y] = last_move;
+							last_move = { x,y };
+							OK = 1;
+							break;
+						}
+						if (OK) break;
+					}
+				}
 				turn = 3 - turn;
 				absorb_input();
 				break;
@@ -1042,18 +1090,10 @@ void PvC_easy(){
 					save_PvC_easy();
 					continue;
 				}
-			/*	if (tmp == F1) {
-					if (last_move.x == 0 && last_move.y == 0) continue;
-					turn = 3 - turn;
-					chr[last_move.x][last_move.y] = 0;
-					dd[last_move.x][last_move.y] = 0;
-					last_move = trc[last_move.x][last_move.y];
-					turn = 3 - turn;
-					chr[last_move.x][last_move.y] = 0;
-					dd[last_move.x][last_move.y] = 0;
-					last_move = trc[last_move.x][last_move.y];
-					break;
-				}*/
+				if (tmp == F5) {
+					steal = 1 - steal;
+					continue;
+				}
 				if (tmp == 72) {
 					if (!avalible(now.x, now.y - 1)) continue;
 					gotoXY(X, Y);
@@ -1107,19 +1147,38 @@ void PvC_easy(){
 					continue;
 				}
 				if (tmp == 13) {
-					if (dd[now.x][now.y])
-					{
+					if (steal == 0) {
+						if (dd[now.x][now.y])
+						{
+							absorb_input();
+							continue;
+						}
+						dd[now.x][now.y] = 1;
+						color[now.x][now.y] = 8 + rand() % 8;
+						if (turn == 1) chr[now.x][now.y] = 'X';
+						else chr[now.x][now.y] = 'O';
+						turn = 3 - turn;
 						absorb_input();
-						break;
+						trc[now.x][now.y] = last_move;
+						last_move = { now.x,now.y };
 					}
-					dd[now.x][now.y] = 1;
-					color[now.x][now.y] = 8 + rand() % 8;
-					if (turn == 1) chr[now.x][now.y] = 'X';
-					else chr[now.x][now.y] = 'O';
-					turn = 3 - turn;
-					absorb_input();
-					trc[now.x][now.y] = last_move;
-					last_move = { now.x,now.y };
+					if (steal == 1) {
+						if (!dd[now.x][now.y]) {
+							absorb_input();
+							continue;
+						}
+						if (turn == 1 && chr[now.x][now.y] == 'X') continue;
+						if (turn == 2 && chr[now.x][now.y] == 'O') continue;
+						int RAND = rand() % 10;
+						if (RAND == 0 || RAND == 3 || RAND == 6 || RAND == 9) {
+							if (turn == 1 && chr[now.x][now.y] == 'O')
+								chr[now.x][now.y] = 'X';
+							if (turn == 2 && chr[now.x][now.y] == 'X')
+								chr[now.x][now.y] = 'O';
+						}
+						turn = 3 - turn;
+						absorb_input();
+					}
 					break;
 				}
 			}
@@ -1144,7 +1203,6 @@ void PvC_data() {
 		TextColor(14);
 		gotoXY(40, 5);
 		printf("Please select difficulty");
-		//////////////////////////////////////////
 		TextColor(12);
 		gotoXY(40, 15);
 		printf("easy");
@@ -1152,15 +1210,22 @@ void PvC_data() {
 		printf("normal");
 		gotoXY(40, 17);
 		printf("hard");
-		//gotoXY(40, 16);
-		//printf("choose2");
-
-		//gotoXY(40, 17);
-		//printf("choose3");
-		/////////////////////////////////////////////////////////////////
+		if (y == 15) {
+			gotoXY(60, 15);
+			printf("computer has highly chance to get your symbol");
+		}
+		if (y == 16) {
+			gotoXY(60, 16);
+			printf("say some fucking things for normal system");
+		}
+		if (y == 17) {
+			gotoXY(60, 17);
+			printf("say some fucking things for hard system");
+		}
 		gotoXY(x, y);
 		printf("%c", char(175));
 		while (1) {
+
 			int tmp = inputKey();
 			if (tmp != -1) {
 				if (tmp == 72) {
@@ -1252,7 +1317,7 @@ int main() {
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 	cout.tie(0);
-	::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, 0);
 	srand(time(NULL));
 	HANDLE hin = GetStdHandle(STD_INPUT_HANDLE);
 	SetConsoleMode(hin, ENABLE_EXTENDED_FLAGS);

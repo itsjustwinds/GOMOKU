@@ -75,4 +75,26 @@ void win_animation(int winner) {
 				return;
 		}
 	}
+	else {
+		while (1) {
+			clrscr();
+			gotoXY(0, 11);
+			TextColor(8 + Rand(0, 10000) % 8);
+			printf("                                             LL                 OOOO                 SSSSSS           EEEEEEE      \n");
+			printf("                                             LL               OO    OO              SSS               EE           \n");
+			printf("                                             LL              OO      OO            SSS                EE           \n");
+			printf("                                             LL             OO        OO          SSS                 EE           \n");
+			printf("                                             LL             OO        OO            SSS               EEEEEE       \n");
+			printf("                                             LL             OO        OO              SSSS            EE           \n");
+			printf("                                             LL              OO      OO                  SSS          EE           \n");
+			printf("                                             LL               OO    OO                  SSS           EE           \n");
+			printf("                                             LLLLLLLL           OOOO                 SSSS             EEEEEEE      \n");
+			TextColor(15);
+			gotoXY(75, 40);
+			printf("press any key to exit");
+			Sleep(500);
+			if (inputKey() != -1)
+				return;
+		}
+	}
 }

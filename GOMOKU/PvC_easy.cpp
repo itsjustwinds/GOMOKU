@@ -110,7 +110,7 @@ int PvC_easy(int saved_game, char player1, char player2) {
 	while (1) {
 		hide_pointer();
 		absorb_input();
-		int TMP = draw_board(pos, dd, chr, player1, player2, done);
+		int TMP = draw_board(pos, dd, chr, player1, player2, done, 1);
 		if (TMP) {
 			if (TMP == 1)statistics(0, 1, 0, 1);
 			else statistics(0, 0, 1, 1);

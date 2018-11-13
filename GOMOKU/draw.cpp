@@ -37,7 +37,7 @@
 #define F8  66
 #define F9  67
 using namespace std;
-int draw_board(point pos[100][100], int dd[100][100], int chr[100][100], char player1, char player2,int done) {
+int draw_board(point pos[100][100], int dd[100][100], int chr[100][100], char player1, char player2,int done,int iscomputer) {
 	int dirrectX[8] = { -1,-1,-1,0,1,1,1,0 };
 	int dirrectY[8] = { -1,0,1,1,1,0,-1,-1 };
 	int winner = 0;
@@ -51,7 +51,8 @@ int draw_board(point pos[100][100], int dd[100][100], int chr[100][100], char pl
 		if (winner) break;
 	}
 	if (winner) {
-		win_animation(winner);
+		if (iscomputer&&winner == 2) win_animation(0);
+		else win_animation(winner);
 		return winner;
 	}
 	TextColor(13);

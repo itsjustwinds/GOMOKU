@@ -102,7 +102,7 @@ int PvP(int saved_game, char player1, char player2) {
 	while (1) {
 		hide_pointer();
 		absorb_input();
-		if (draw_board(pos, dd, chr, player1, player2,done) == 1) {
+		if (draw_board(pos, dd, chr, player1, player2,done,0) ) {
 			return 1;
 		}
 		done = 1;

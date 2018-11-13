@@ -33,5 +33,5 @@
 using namespace std;
 #ifndef DRAW_H
 #define DRAW_H
-int draw_board(point pos[100][100], int dd[100][100], int chr[100][100], char player1, char player2,int done);
+int draw_board(point pos[100][100], int dd[100][100], int chr[100][100], char player1, char player2,int done,int iscomputer);
 #endif // !DRAW_H

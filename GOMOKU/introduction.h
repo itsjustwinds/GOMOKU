@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <iomanip>
 #include <set>
@@ -16,7 +17,6 @@
 #include<conio.h>
 #include<dos.h>
 #include<fstream>
-#include"console_function.h"
 #pragma warning (disable : 4996)
 #define consoleM 120
 #define consoleN 30
@@ -32,40 +32,5 @@
 using namespace std;
 #ifndef INTRODUCTION_H
 #define INTRODUCTION_H
-void game_introduction() {
-	hide_pointer();
-	absorb_input();
-	clrscr();
-	while (1) {
-		clrscr();
-		TextColor(14);
-		gotoXY(35, 1);
-		printf("     This is a simple CARO game");
-		TextColor(15);
-		gotoXY(20, 4);
-		printf("- Each turn, you or your opponent can place one owned symbol to the table.");
-		gotoXY(20, 5);
-		printf("- To win this game, your symbols must be 5 in a row or a diagonal.");
-		gotoXY(20, 6);
-		printf("- You have chance get your opponent symbols.");
-		gotoXY(20, 7);
-		printf("- There is no timer, think carefully before do your choice.\n\n\n\n\n");
-		////////////////////////////////////////////////////////////////////////////////////////////
-		TextColor(11);
-		printf("                          CCCCCCC            A           RRRRRR             OOOOO      \n");
-		printf("                         CCC     CC         AAA          RR    RR         OO     OO    \n");
-		printf("                        CC                 AA AA         RR     RR       OO       OO   \n");
-		printf("                       CCC                AA   AA        RR    RR        OO       OO   \n");
-		printf("                        CC               AAAAAAAAA       RRRRR           OO       OO   \n");
-		printf("                         CCC     CC     AA       AA      RR   RR          OO     OO    \n");
-		printf("                          CCCCCCC      AA         AA     RR     RR          OOOOO      \n");
-		gotoXY(35, 25);
-		TextColor(13);
-		printf("Press any key to continue !");
-		while (1) {
-			if (inputKey() != -1) return;
-			Sleep(1);
-		}
-	}
-}
+void game_introduction();
 #endif // !INTRODUCTION_H

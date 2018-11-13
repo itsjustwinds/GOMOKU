@@ -17,7 +17,6 @@
 #include<conio.h>
 #include<dos.h>
 #include<fstream>
-#include"console_function.h"
 #pragma warning (disable : 4996)
 #define consoleM 120
 #define consoleN 30
@@ -31,7 +30,7 @@
 #define F8  66
 #define F9  67
 using namespace std;
-#ifndef DRAW_H
-#define DRAW_H
-int draw_board(point pos[100][100], int dd[100][100], int chr[100][100], char player1, char player2,int done);
-#endif // !DRAW_H
+#ifndef PvC_MENU_H
+#define PvC_MENU_H
+int PvC_menu(char player1, char player2);
+#endif // !PvC_MENU_H

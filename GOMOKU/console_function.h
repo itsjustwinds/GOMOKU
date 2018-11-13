@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <iomanip>
 #include <set>
@@ -17,6 +18,7 @@
 #include<dos.h>
 #include<fstream>
 #pragma warning (disable : 4996)
+#define ll long long
 #define consoleM 120
 #define consoleN 30
 #define F1  59
@@ -31,58 +33,15 @@
 using namespace std;
 #ifndef CONSOLE_FUNCTION_H
 #define CONSOLE_FUNCTION_H
-long long Rand(long long l, long long h)
-{
-	return l + ((long long)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) * (RAND_MAX + 1) +
-		(long long)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) +
-		(long long)rand() * (RAND_MAX + 1) +
-		rand()) % (h - l + 1);
-}
-int inputKey(){
-	if (_kbhit()){
-		int key = _getch();
-		return key;
-	}
-	return -1;
-}
-void absorb_input() {
-	while (inputKey() != -1) {}
-}
-void clrscr(){
-	CONSOLE_SCREEN_BUFFER_INFO	csbiInfo;
-	HANDLE	hConsoleOut;
-	COORD	Home = { 0,0 };
-	DWORD	dummy;
-	hConsoleOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	GetConsoleScreenBufferInfo(hConsoleOut, &csbiInfo);
-	FillConsoleOutputCharacter(hConsoleOut, ' ', csbiInfo.dwSize.X * csbiInfo.dwSize.Y, Home, &dummy);
-	csbiInfo.dwCursorPosition.X = 0;
-	csbiInfo.dwCursorPosition.Y = 0;
-	SetConsoleCursorPosition(hConsoleOut, csbiInfo.dwCursorPosition);
-}
-void gotoXY(int column, int line){
-	COORD coord;
-	coord.X = column;
-	coord.Y = line;
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
-void TextColor(int color){
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-}
-void appear_pointer() {
-	HANDLE hOut;
-	CONSOLE_CURSOR_INFO ConCurInf;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	ConCurInf.dwSize = 10;
-	ConCurInf.bVisible = 1;
-	SetConsoleCursorInfo(hOut, &ConCurInf);
-}
-void hide_pointer() {
-	HANDLE hOut;
-	CONSOLE_CURSOR_INFO ConCurInf;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	ConCurInf.dwSize = 10;
-	ConCurInf.bVisible = 0;
-	SetConsoleCursorInfo(hOut, &ConCurInf);
-}
+struct point {
+	int x, y;
+};
+long long Rand(long long l, long long h);
+int inputKey();
+void absorb_input();
+void clrscr();
+void gotoXY(int column, int line);
+void TextColor(int color);
+void appear_pointer();
+void hide_pointer();
 #endif // !CONSOLE_FUNCTION_H

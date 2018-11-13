@@ -16,10 +16,14 @@
 #include<conio.h>
 #include<dos.h>
 #include<fstream>
+#include"checker.h"
 #include"console_function.h"
-#include"splash_screen.h"
+#include"draw.h"
 #include"introduction.h"
 #include"main_menu.h"
+#include"PvP.h"
+#include"splash_screen.h"
+#include"win_animation.h"
 #pragma warning (disable : 4996)
 #define consoleM 120
 #define consoleN 30
@@ -35,7 +39,7 @@
 using namespace std;
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 int game() {
-	//splash_screen();
+	splash_screen();
 	return main_menu();
 }
 int main() {

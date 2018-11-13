@@ -1,0 +1,4 @@
+﻿  PvC_hard.cpp
+c:\users\mr-huy\documents\new folder\gomoku\gomoku\pvc_hard.cpp(249): warning C4244: 'initializing': conversion from 'double' to '__int64', possible loss of data
+c:\users\mr-huy\documents\new folder\gomoku\gomoku\pvc_hard.cpp(266): warning C4018: '<': signed/unsigned mismatch
+  GOMOKU.vcxproj -> C:\Users\mr-HUY\Documents\New folder\GOMOKU\Debug\GOMOKU.exe

@@ -290,7 +290,7 @@ void reset_data_PvC_hard(point pos[100][100], int dd[100][100], int chr[100][100
 			chr[i][j] = 0;
 	now = { 1,1 };
 	Last = { 0,0 };
-	turn = 1;
+	turn = 2;
 }
 
 void load_PvC_hard(int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn) {
@@ -345,7 +345,11 @@ int PvC_hard(int saved_game, char player1, char player2) {
 		hide_pointer();
 		absorb_input();
 		if (turn == 2) {
-			point result = calculate(pos,dd,chr);
+			point result;
+			if (!done) {
+				result = { 10,10 };
+			}
+			else result = calculate(pos,dd,chr);
 			chr[result.x][result.y] = turn;
 			dd[result.x][result.y] = 1;
 			pre[result.x][result.y] = Last;

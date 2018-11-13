@@ -31,12 +31,12 @@
 #define F8  66
 #define F9  67
 using namespace std;
-#ifndef PvC_HARD_H
-#define PvC_HARD_H
-int PvC_hard_data(char player1, char player2);
-int PvC_hard(int saved_game, char player1, char player2);
+#ifndef PvC_NORMAL_H
+#define PvC_NORMAL_H
+int PvC_normal_data(char player1, char player2);
+int PvC_normal(int saved_game, char player1, char player2);
 point calculate(point pos[100][100], int dd[100][100], int chr[100][100]);
-void reset_data_PvC_hard(point pos[100][100], int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn);
-void load_PvC_hard(int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn);
-void save_PvC_hard(int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn);
-#endif // !PvC_HARD_H
+void reset_data_PvC_normal(point pos[100][100], int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn);
+void load_PvC_normal(int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn);
+void save_PvC_normal(int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn);
+#endif // !PvC_NORMAL_H

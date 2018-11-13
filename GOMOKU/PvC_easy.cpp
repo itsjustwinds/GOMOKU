@@ -21,9 +21,8 @@
 #include"draw.h"
 #include"introduction.h"
 #include"main_menu.h"
-#include"PvC_hard.h"
 #include"PvC_menu.h"
-#include"PvC_normal.h"
+#include"PvC_easy.h"
 #include"PvP.h"
 #include"splash_screen.h"
 #include"win_animation.h"
@@ -42,7 +41,7 @@
 #define F8  66
 #define F9  67
 using namespace std;
-void reset_data_PvC_hard(point pos[100][100], int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn) {
+void reset_data_PvC_easy(point pos[100][100], int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn) {
 	for (int i = 0; i < 100; ++i)
 		for (int j = 0; j < 100; ++j) {
 			pos[i][j] = { 0,0 };
@@ -59,8 +58,8 @@ void reset_data_PvC_hard(point pos[100][100], int dd[100][100], int chr[100][100
 	turn = 2;
 }
 
-void load_PvC_hard(int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn) {
-	ifstream Fin("PvC_hard_data.txt");
+void load_PvC_easy(int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn) {
+	ifstream Fin("PvC_easy_data.txt");
 	for (int i = 0; i < 100; ++i)
 		for (int j = 0; j < 100; ++j)
 			Fin >> dd[i][j];
@@ -76,8 +75,8 @@ void load_PvC_hard(int dd[100][100], int chr[100][100], point pre[100][100], poi
 	Fin.close();
 }
 
-void save_PvC_hard(int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn) {
-	ofstream Fout("PvC_hard_data.txt");
+void save_PvC_easy(int dd[100][100], int chr[100][100], point pre[100][100], point &now, point &Last, int &turn) {
+	ofstream Fout("PvC_easy_data.txt");
 	for (int i = 0; i < 100; ++i) {
 		for (int j = 0; j < 100; ++j)
 			Fout << dd[i][j] << " ";
@@ -99,34 +98,55 @@ void save_PvC_hard(int dd[100][100], int chr[100][100], point pre[100][100], poi
 	Fout.close();
 }
 
-int PvC_hard(int saved_game, char player1, char player2) {
+int PvC_easy(int saved_game, char player1, char player2) {
 	point pos[100][100], now, pre[100][100], Last;
 	int dd[100][100], turn;
 	int chr[100][100];
 	int done = 0;
-	reset_data_PvC_hard(pos, dd, chr, pre, now, Last, turn);
-	if (saved_game) load_PvC_hard(dd, chr, pre, now, Last, turn);
+	reset_data_PvC_easy(pos, dd, chr, pre, now, Last, turn);
+	if (saved_game) load_PvC_easy(dd, chr, pre, now, Last, turn);
 	clrscr();
+	int dem = 1;
 	while (1) {
 		hide_pointer();
 		absorb_input();
 		int TMP = draw_board(pos, dd, chr, player1, player2, done);
 		if (TMP) {
-			if (TMP == 1)statistics(0, 1, 0, 3);
-			else statistics(0, 0, 1, 3);
+			if (TMP == 1)statistics(0, 1, 0, 1);
+			else statistics(0, 0, 1, 1);
 			return 1;
 		}
 		if (turn == 2) {
 			point result;
-			if (!done) {
-				result = { 10,10 };
+			if (dem != 1) {
+				vector<point > need_to_check;
+				need_to_check.clear();
+				int dirrectX[8] = { -1,-1,-1,0,1,1,1,0 };
+				int dirrectY[8] = { -1,0,1,1,1,0,-1,-1 };
+				for (int i = 1; i <= 20; ++i)
+					for (int j = 1; j <= 20; ++j) {
+						if (chr[i][j] == 0) continue;
+						for (int dirrect = 0; dirrect < 8; ++dirrect) {
+							int x = i + dirrectX[dirrect];
+							int y = j + dirrectY[dirrect];
+							if (!avalible(x, y) || chr[x][y] != 0) continue;
+							need_to_check.push_back({ x, y });
+						}
+					}
+				result = need_to_check[Rand(0, need_to_check.size() - 1)];
 			}
-			else result = calculate(pos,dd,chr);
+			else {
+				if (!done) {
+					result = { 10,10 };
+				}
+				else result = calculate(pos, dd, chr);
+			}
 			chr[result.x][result.y] = turn;
 			dd[result.x][result.y] = 1;
 			pre[result.x][result.y] = Last;
 			turn = 3 - turn;
 			Last = result;
+			dem = (dem + 1) % 3;
 			continue;
 		}
 		done = 1;
@@ -140,7 +160,7 @@ int PvC_hard(int saved_game, char player1, char player2) {
 					return 1;
 				}
 				if (tmp == F5) {
-					save_PvC_hard(dd, chr, pre, now, Last, turn);
+					save_PvC_easy(dd, chr, pre, now, Last, turn);
 					continue;
 				}
 				if (tmp == 'u') {
@@ -223,7 +243,7 @@ int PvC_hard(int saved_game, char player1, char player2) {
 	return 0;
 }
 
-int PvC_hard_data(char player1, char player2) {
+int PvC_easy_data(char player1, char player2) {
 	clrscr();
 	absorb_input();
 	hide_pointer();
@@ -240,7 +260,7 @@ int PvC_hard_data(char player1, char player2) {
 		absorb_input();
 		TextColor(14);
 		gotoXY(60, 5);
-		printf("Hard");
+		printf("Easy");
 		TextColor(12);
 		gotoXY(60, 15);
 		printf("New game");
@@ -264,10 +284,10 @@ int PvC_hard_data(char player1, char player2) {
 				}
 				if (tmp == 13) {
 					if (y == 15) {
-						return PvC_hard(0, player1, player2);
+						return PvC_easy(0, player1, player2);
 					}
 					if (y == 16) {
-						return PvC_hard(1, player1, player2);
+						return PvC_easy(1, player1, player2);
 					}
 				}
 			}

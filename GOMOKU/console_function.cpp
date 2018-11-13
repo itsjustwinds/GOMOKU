@@ -16,6 +16,7 @@
 #include<conio.h>
 #include<dos.h>
 #include<fstream>
+#include"console_function.h"
 #pragma warning (disable : 4996)
 #define consoleM 120
 #define consoleN 30
@@ -29,11 +30,11 @@
 #define F8  66
 #define F9  67
 using namespace std;
-long long Rand(long long l, long long h)
+ll Rand(ll l, ll h)
 {
-	return l + ((long long)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) * (RAND_MAX + 1) +
-		(long long)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) +
-		(long long)rand() * (RAND_MAX + 1) +
+	return l + ((ll)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) * (RAND_MAX + 1) +
+		(ll)rand() * (RAND_MAX + 1) * (RAND_MAX + 1) +
+		(ll)rand() * (RAND_MAX + 1) +
 		rand()) % (h - l + 1);
 }
 int inputKey() {

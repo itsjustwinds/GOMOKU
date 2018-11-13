@@ -21,11 +21,15 @@
 #include"draw.h"
 #include"introduction.h"
 #include"main_menu.h"
+#include"PvC_hard.h"
+#include"PvC_menu.h"
+#include"PvC_normal.h"
+#include"PvC_easy.h"
 #include"PvP.h"
 #include"splash_screen.h"
 #include"win_animation.h"
-#include"PvC_menu.h"
-#include"PvC_hard.h"
+#include"BOT.h"
+#include"statistics.h"
 #pragma warning (disable : 4996)
 #define consoleM 120
 #define consoleN 30
@@ -43,12 +47,12 @@ int PvC_menu(char player1, char player2) {
 	clrscr();
 	absorb_input();
 	hide_pointer();
-	gotoXY(0, 0);
-	TextColor(12);
-	printf("[R] : return");
 	int x = 58, y = 15;
-	int minn = 15, maxx = 17;
+	int minn = 15, maxx = 18;
 	while (1) {
+		gotoXY(0, 0);
+		TextColor(12);
+		printf("[R] : return");
 		for (int i = 15; i <= 19; ++i) {
 			gotoXY(58, i);
 			printf(" ");
@@ -64,6 +68,8 @@ int PvC_menu(char player1, char player2) {
 		printf("Normal");
 		gotoXY(60, 17);
 		printf("Hard");
+		gotoXY(60, 18);
+		printf("Statistics");
 		/////////////////////////////////////////////////////////////////
 		gotoXY(x, y);
 		printf("%c", char(175));
@@ -82,15 +88,30 @@ int PvC_menu(char player1, char player2) {
 					return 0;
 				}
 				if (tmp == 13) {
-					/*if (y == 15) {
-						break;
+					if (y == 15) {
+						if (PvC_easy_data(player1, player2) == 0) {
+							clrscr();
+							break;
+						}
+						return 1;
 					}
 					if (y == 16) {
-
-						break;
-					}*/
+						if (PvC_normal_data(player1,player2)==0) {
+							clrscr();
+							break;
+						}
+						return 1;
+					}
 					if (y == 17) {
-						return PvC_hard_data(player1,player2);
+						if (PvC_hard_data(player1, player2) == 0) {
+							clrscr();
+							break;
+						}
+						return 1;
+					}
+					if (y == 18) {
+						statistics(1,0,0,1);
+						clrscr();
 						break;
 					}
 				}

@@ -1,4 +1,23 @@
-﻿  PvC_hard.cpp
-c:\users\mr-huy\documents\new folder\gomoku\gomoku\pvc_hard.cpp(249): warning C4244: 'initializing': conversion from 'double' to '__int64', possible loss of data
-c:\users\mr-huy\documents\new folder\gomoku\gomoku\pvc_hard.cpp(266): warning C4018: '<': signed/unsigned mismatch
-  GOMOKU.vcxproj -> C:\Users\mr-HUY\Documents\New folder\GOMOKU\Debug\GOMOKU.exe
+﻿  BOT.cpp
+c:\users\mr-huy\documents\gomoku\gomoku\gomoku\bot.cpp(290): warning C4018: '<': signed/unsigned mismatch
+  checker.cpp
+  console_function.cpp
+  draw.cpp
+  introduction.cpp
+  main_menu.cpp
+  PvC_easy.cpp
+c:\users\mr-huy\documents\gomoku\gomoku\gomoku\pvc_easy.cpp(136): warning C4244: 'argument': conversion from '__int64' to 'const unsigned int', possible loss of data
+  PvC_hard.cpp
+  PvC_menu.cpp
+  PvC_normal.cpp
+c:\users\mr-huy\documents\gomoku\gomoku\gomoku\pvc_normal.cpp(138): warning C4244: 'argument': conversion from '__int64' to 'const unsigned int', possible loss of data
+  PvP.cpp
+  Source.cpp
+c:\users\mr-huy\documents\gomoku\gomoku\gomoku\source.cpp(50): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  splash_screen.cpp
+  statistics.cpp
+  win_animation.cpp
+c:\users\mr-huy\documents\gomoku\gomoku\gomoku\win_animation.cpp(41): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Generating Code...
+c:\users\mr-huy\documents\gomoku\gomoku\gomoku\statistics.cpp(101): warning C4715: 'statistics': not all control paths return a value
+  GOMOKU.vcxproj -> C:\Users\mr-HUY\Documents\GOMOKU\GOMOKU\Debug\GOMOKU.exe

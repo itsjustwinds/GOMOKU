@@ -19,6 +19,7 @@
 #include<fstream>
 #pragma warning (disable : 4996)
 #define ll long long
+#define db double
 #define consoleM 120
 #define consoleN 30
 #define F1  59
@@ -36,7 +37,7 @@ using namespace std;
 struct point {
 	int x, y;
 };
-long long Rand(long long l, long long h);
+ll Rand(ll l, ll h);
 int inputKey();
 void absorb_input();
 void clrscr();

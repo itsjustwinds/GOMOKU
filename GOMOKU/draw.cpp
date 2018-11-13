@@ -52,7 +52,7 @@ int draw_board(point pos[100][100], int dd[100][100], int chr[100][100], char pl
 	}
 	if (winner) {
 		win_animation(winner);
-		return 1;
+		return winner;
 	}
 	TextColor(13);
 	gotoXY(120, 5);
@@ -65,7 +65,7 @@ int draw_board(point pos[100][100], int dd[100][100], int chr[100][100], char pl
 	gotoXY(100, 14);
 	printf("[U] : undo");
 	gotoXY(100, 15);
-	printf("Use narrow key to move");
+	printf("Use arrow key to move");
 	gotoXY(100, 16);
 	printf("[ENTER] : choose");
 

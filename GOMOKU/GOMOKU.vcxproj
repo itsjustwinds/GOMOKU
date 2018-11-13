@@ -115,28 +115,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BOT.cpp" />
     <ClCompile Include="checker.cpp" />
     <ClCompile Include="console_function.cpp" />
     <ClCompile Include="draw.cpp" />
     <ClCompile Include="introduction.cpp" />
     <ClCompile Include="main_menu.cpp" />
+    <ClCompile Include="PvC_easy.cpp" />
     <ClCompile Include="PvC_hard.cpp" />
     <ClCompile Include="PvC_menu.cpp" />
+    <ClCompile Include="PvC_normal.cpp" />
     <ClCompile Include="PvP.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="splash_screen.cpp" />
+    <ClCompile Include="statistics.cpp" />
     <ClCompile Include="win_animation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BOT.h" />
     <ClInclude Include="checker.h" />
     <ClInclude Include="console_function.h" />
     <ClInclude Include="draw.h" />
     <ClInclude Include="introduction.h" />
     <ClInclude Include="main_menu.h" />
+    <ClInclude Include="PvC_easy.h" />
     <ClInclude Include="PvC_hard.h" />
     <ClInclude Include="PvC_menu.h" />
+    <ClInclude Include="PvC_normal.h" />
     <ClInclude Include="PvP.h" />
     <ClInclude Include="splash_screen.h" />
+    <ClInclude Include="statistics.h" />
     <ClInclude Include="win_animation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
